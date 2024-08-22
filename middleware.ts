@@ -11,7 +11,7 @@ export default function middleware(req: NextRequest) {
        
         const token = req.cookies.get('authToken');
         const role = req.cookies.get('role')?.value;
-        console.log("Token =>", token)
+        console.log("Request =>", req)
        
         if(typeof role === "string"){
             if(["EMPLOYEE"].includes(role)){
