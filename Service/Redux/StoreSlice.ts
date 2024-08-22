@@ -7,7 +7,7 @@ import { AddUser, UpdateSalaryRequest } from '@/app/users/page'
 import { RootState } from './Store'
 
 
-export const BASE_URL = 'http://localhost:4000'
+export const BASE_URL = 'https://nextbackend-0gw6.onrender.com'
 
 
 export interface ErrorResponse  {

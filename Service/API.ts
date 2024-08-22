@@ -1,7 +1,7 @@
 import { LoginData } from "@/app/auth/login/page"
 import axios from "axios"
+import { BASE_URL } from "./Redux/StoreSlice";
 
-const BASE_URL = "http://192.168.1.85:4000"
 
 export const LOGIN_FOROM_CONTEXT = async(loginData : LoginData) => {
     try {
