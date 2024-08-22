@@ -46,9 +46,7 @@ const Page = () => {
     if (success) {
       toast.success("Login Successfully.")
       setProfile(data)
-      setTimeout(() => {
-        router.push('/')
-      }, 200)
+      router.push('/')
     } else if (isError) {
       toast.warn(apiError)
     }

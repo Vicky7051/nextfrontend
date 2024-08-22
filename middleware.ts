@@ -11,6 +11,7 @@ export default function middleware(req: NextRequest) {
         // Check for the presence of a specific cookie (e.g., "auth-token")
         const token = req.cookies.get('authToken');
         const role = req.cookies.get('role')?.value;
+        console.log("Token =>", token)
         // If the token is not present, redirect to the login page
         if(typeof role === "string"){
             if(["EMPLOYEE"].includes(role)){
