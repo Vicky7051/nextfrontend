@@ -61,7 +61,7 @@ const page = () => {
     useEffect(() => {
         dispatch(GET_USER_LIST({pageNumber, noOfRows}))
         getAllData()
-    }, [])
+    }, [dispatch, pageNumber, noOfRows])
 
     const columns = [
         {
@@ -164,7 +164,7 @@ const page = () => {
             toast.warn(error)
         }
         dispatch(resetFlagsReducer())
-    }, [isLoading, isError, success, dispatch, error])
+    }, [isLoading, isError, success, dispatch, error, noOfRows, pageNumber])
 
     const [searchText, setSearchText] = useState<string>('')
 
@@ -217,7 +217,7 @@ const page = () => {
             toast.warn(deleteError)
         }
         dispatch(resetFlagsReducer())
-      }, [deleteSuccess, deleteError, deleteIsLoading, deleteIsError, dispatch])
+      }, [deleteSuccess, deleteError, deleteIsLoading, deleteIsError, dispatch, noOfRows, pageNumber])
 
       const [isEditModal, setIsEditModal] = useState<boolean>(false)
 
@@ -289,7 +289,7 @@ const page = () => {
             toast.warn(updateUserError)
         }
         dispatch(resetFlagsReducer())
-      }, [updateUserIsLoading,updateUserSuccess,updateUserIsError, dispatch, updateUserError])
+      }, [updateUserIsLoading,updateUserSuccess,updateUserIsError, dispatch, updateUserError, pageNumber, noOfRows])
 
 
 
@@ -308,7 +308,7 @@ const page = () => {
       useEffect(() => {
         if(searchText.length > 0) dispatch(SEARCH_USER({query : searchText, pageNumber, noOfRows}))
         else dispatch(GET_USER_LIST({pageNumber, noOfRows}))
-      }, [pageNumber, noOfRows])
+      }, [pageNumber, noOfRows, dispatch, searchText])
 
     return (
         <div>
@@ -341,7 +341,7 @@ const page = () => {
                         <select className="w-full p-2 bg-transparent border rounded-sm text-white outline-none" name="reportingManager" onChange={e => onChangeHandler(e)} value={user.reportingManager}>
                             <option disabled value={''}>Select Manager</option>
                             {
-                                manager.map((item : any) => item.role === "MANAGER" && <option value={item._id} className="text-black">{item.name}</option>)
+                                manager.map((item : any) => item.role === "MANAGER" && <option key={item._id} value={item._id} className="text-black">{item.name}</option>)
                             }
                         </select>
                     </div>}
@@ -350,7 +350,7 @@ const page = () => {
                         <select className="w-full p-2 bg-transparent border rounded-sm text-white outline-none" name="teamLeader" onChange={e => onChangeHandler(e)} value={user.teamLeader}>
                             <option disabled value={''}>Select Team Leader</option>
                             {
-                                teamLeader.map((item : any) => item.role === "TEAM_LEADER" && <option value={item._id} className="text-black">{item.name}</option>)
+                                teamLeader.map((item : any) => item.role === "TEAM_LEADER" && <option key={item._id} value={item._id} className="text-black">{item.name}</option>)
                             }
                         </select>
                     </div>}
@@ -406,7 +406,7 @@ const page = () => {
                         <select className="w-full p-2 bg-transparent border rounded-sm text-white outline-none" name="reportingManager" onChange={e => onChangeEditInputHandler(e)} value={selectedUser?.reportingManager ? selectedUser?.reportingManager : ''}>
                             <option disabled value={''}>Select Manager</option>
                             {
-                                manager.map((item : any) => item.role === "MANAGER" && <option value={item._id} className="text-black">{item.name}</option>)
+                                manager.map((item : any) => item.role === "MANAGER" && <option key={item._id} value={item._id} className="text-black">{item.name}</option>)
                             }
                         </select>
                     </div>}
@@ -415,7 +415,7 @@ const page = () => {
                         <select className="w-full p-2 bg-transparent border rounded-sm text-white outline-none" name="teamLeader" onChange={e => onChangeEditInputHandler(e)} value={selectedUser?.teamLeader ? selectedUser?.teamLeader : ''}>
                             <option disabled value={''}>Select Team Leader</option>
                             {
-                                teamLeader.map((item : any) => item.role === "TEAM_LEADER" && <option value={item._id} className="text-black">{item.name}</option>)
+                                teamLeader.map((item : any) => item.role === "TEAM_LEADER" && <option key={item._id} value={item._id} className="text-black">{item.name}</option>)
                             }
                         </select>
                     </div>}

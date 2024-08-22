@@ -33,7 +33,7 @@ const page = () => {
     const {data, pagination} = useSelector((state : RootState) => state.approval)
     useEffect(() => {
         dispatch(GET_APPROVAL_LIST({pageNumber, noOfRows}))
-    }, [pageNumber, noOfRows])
+    }, [pageNumber, noOfRows, dispatch])
 
     const columns = [
         {
@@ -96,7 +96,7 @@ const page = () => {
             setIsReasonModal(false)
         }
         dispatch(resetFlagsReducer())
-    }, [approvalStatusIsLoading, approvalStatusSuccess, approvalStatusIsError,dispatch])
+    }, [approvalStatusIsLoading, approvalStatusSuccess, approvalStatusIsError, dispatch, pageNumber, noOfRows])
 
     const {
         rejectSalaryIsLoading,
@@ -114,7 +114,7 @@ const page = () => {
         }
         setIsReasonModal(false)
         dispatch(resetFlagsReducer())
-    }, [rejectSalaryIsLoading,rejectSalarySuccess,rejectSalaryIsError,dispatch])
+    }, [rejectSalaryIsLoading,rejectSalarySuccess,rejectSalaryIsError,dispatch, pageNumber, noOfRows])
 
     const handlePageChange = (val : number) => {
         setPageNumber(val)

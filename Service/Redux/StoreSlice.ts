@@ -1,7 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
-import { useContext } from 'react'
-import contextProvider from '../Context/context'
 import { LoginData } from '@/app/auth/login/page'
 import { AddUser, UpdateSalaryRequest } from '@/app/users/page'
 import { RootState } from './Store'
@@ -252,7 +250,7 @@ export const GET_LOGS = createAsyncThunk('get/logs', async(_, {rejectWithValue})
     }
 })
 
-const storeSlice = createSlice({
+export const storeSlice = createSlice({
     name : "store",
     initialState,
     reducers : {
@@ -511,4 +509,4 @@ const storeSlice = createSlice({
 
 export const {resetFlagsReducer} = storeSlice.actions
 
-export default storeSlice.reducer
+// export default storeSlice.reducer

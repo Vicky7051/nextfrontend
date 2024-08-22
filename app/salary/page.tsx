@@ -21,7 +21,7 @@ const page = () => {
 
     useEffect(() => {
         dispatch(GET_USER_LIST({pageNumber : 1, noOfRows : 10}))
-    }, [])
+    }, [dispatch])
 
     const columns = [
         {
@@ -110,12 +110,12 @@ const page = () => {
         }
         setIsModalOpen(false)
         dispatch(resetFlagsReducer())
-    }, [requestSuccess,requestIsLoading,requestIsError])
+    }, [requestSuccess,requestIsLoading,requestIsError, dispatch, noOfRows, pageNumber, profile.role, requestError])
 
     useEffect(() => {
         if(searchText.length > 0) dispatch(SEARCH_USER({query : searchText, pageNumber, noOfRows}))
         else dispatch(GET_USER_LIST({pageNumber, noOfRows}))
-      }, [pageNumber, noOfRows])
+      }, [pageNumber, noOfRows, dispatch, searchText])
 
       const onChangeNewSalaryHandler = (e : ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value

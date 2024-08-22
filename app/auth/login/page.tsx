@@ -53,7 +53,7 @@ const Page = () => {
       toast.warn(apiError)
     }
     dispatch(resetFlagsReducer())
-  }, [success, isError, router])
+  }, [success, isError, router, apiError, data, dispatch, setProfile])
 
   return (
     <div className='w-[100%] h-[100vh] flex items-center justify-center'>

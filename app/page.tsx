@@ -17,7 +17,7 @@ export default function Home() {
   
   useEffect(() => {
     dispatch(AUTO_LOGIN())
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     if (success) {
@@ -26,7 +26,7 @@ export default function Home() {
       toast.warn(apiError)
     }
     dispatch(resetFlagsReducer())
-  }, [success, isError])
+  }, [success, isError, dispatch, data, apiError, setProfile])
 
   
   return (

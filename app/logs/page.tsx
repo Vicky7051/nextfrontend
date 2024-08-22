@@ -13,11 +13,11 @@ const page = () => {
 
     useEffect(() => {
         dispatch(GET_LOGS())
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
         dispatch(resetFlagsReducer())
-    }, [requestLogsIsLoading,requestLogsSuccess,requestLogsIsError])
+    }, [requestLogsIsLoading,requestLogsSuccess,requestLogsIsError, dispatch])
 
     const columns = [
         {
