@@ -33,12 +33,18 @@ const page = () => {
     const [selectedId, setSelectedId] = useState<string>('')
 
     const {data, pagination} = useSelector((state : RootState) => state.approval)
-    const {profile} = useSelector((state : RootState) => state.profile)
+    const {profile, isLoading, isError, error} = useSelector((state : RootState) => state.profile)
     useEffect(() => {
         if(!["ADMIN", "MANAGER"].includes(profile.role)){
             router.push('/auth/login')
         }
     }, [profile])
+
+    useEffect(() => {
+        if(isError){
+            router.push('/auth/login')
+        }
+    }, [isError])
 
     useEffect(() => {
         dispatch(GET_APPROVAL_LIST({pageNumber, noOfRows}))

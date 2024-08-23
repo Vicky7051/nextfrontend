@@ -20,6 +20,8 @@ const page = () => {
 
     const profile = useSelector((state : RootState) => state.profile.data)
     
+    const {isError} = useSelector((state : RootState) => state.profile)
+
     useEffect(() => {
         if(!["ADMIN", "MANAGER", "TEAM_LEADER"].includes(profile.role)){
             router.push('/auth/login')
@@ -29,6 +31,11 @@ const page = () => {
     useEffect(() => {
         dispatch(GET_USER_LIST({pageNumber : 1, noOfRows : 10}))
     }, [dispatch])
+    useEffect(() => {
+        if(isError){
+            router.push('/auth/login')
+        }
+    }, [isError])
 
     const columns = [
         {

@@ -50,6 +50,14 @@ const page = () => {
         }
     }, [profile])
 
+    const isLoginError = useSelector((state : RootState) => state.profile.isError)
+
+    useEffect(() => {
+        if(isError){
+            router.push('/auth/login')
+        }
+    }, [isLoginError])
+
     const getAllData = async() => {
         const response = await axios.get(`${BASE_URL}/users/getAllManager`, {
             withCredentials : true

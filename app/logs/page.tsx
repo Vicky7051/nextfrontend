@@ -13,12 +13,18 @@ const page = () => {
 
     const {data, requestLogsIsLoading,requestLogsSuccess,requestLogsIsError} = useSelector((state : RootState) => state.requestLogs)
 
-    const {profile} = useSelector((state : RootState) => state.profile)
+    const {profile, isError} = useSelector((state : RootState) => state.profile)
     useEffect(() => {
         if(!["MANAGER", "TEAM_LEADER", "EMPLOYEE"].includes(profile.role)){
             router.push('/auth/login')
         }
     }, [profile])
+
+    useEffect(() => {
+        if(isError){
+            router.push('/auth/login')
+        }
+    }, [isError])
 
     useEffect(() => {
         dispatch(GET_LOGS())
