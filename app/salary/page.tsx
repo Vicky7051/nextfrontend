@@ -10,14 +10,21 @@ import { IoIosCloseCircleOutline } from "react-icons/io"
 import { UpdateSalaryRequest } from "../users/page"
 import { toast } from "react-toastify"
 import { onlyNumber } from "@/Service/Util"
+import { useRouter } from "next/navigation"
 
 const page = () => {
 
     const dispatch = useDispatch<AppDispatch>()
-
+    const router = useRouter()
     const {data, pagination} = useSelector((state : RootState) => state.user)
 
     const profile = useSelector((state : RootState) => state.profile.data)
+    
+    useEffect(() => {
+        if(!["ADMIN", "MANAGER", "TEAM_LEADER"].includes(profile.role)){
+            router.push('/auth/login')
+        }
+    }, [profile])
 
     useEffect(() => {
         dispatch(GET_USER_LIST({pageNumber : 1, noOfRows : 10}))

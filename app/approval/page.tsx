@@ -7,6 +7,7 @@ import BasicTable from "../../Components/Tables/BasicTable"
 import { toast } from "react-toastify"
 import Modal from 'react-modal'
 import { IoIosCloseCircleOutline } from "react-icons/io"
+import { useRouter } from "next/navigation"
 Modal.setAppElement('#root')
 
 export interface ReasonForRejection {
@@ -19,6 +20,7 @@ export interface dateType {
 
 const page = () => {
     const dispatch = useDispatch<AppDispatch>()
+    const router = useRouter()
 
     const [pageNumber, setPageNumber] = useState<number>(1)
     const [noOfRows, setNoOfRows] = useState<number>(10)
@@ -31,6 +33,13 @@ const page = () => {
     const [selectedId, setSelectedId] = useState<string>('')
 
     const {data, pagination} = useSelector((state : RootState) => state.approval)
+    const {profile} = useSelector((state : RootState) => state.profile)
+    useEffect(() => {
+        if(!["ADMIN", "MANAGER"].includes(profile.role)){
+            router.push('/auth/login')
+        }
+    }, [profile])
+
     useEffect(() => {
         dispatch(GET_APPROVAL_LIST({pageNumber, noOfRows}))
     }, [pageNumber, noOfRows, dispatch])

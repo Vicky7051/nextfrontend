@@ -2,7 +2,7 @@
 import { AppState } from '@/Constent/Interface'
 import contextProvider from '@/Service/Context/context'
 import { AppDispatch, RootState } from '@/Service/Redux/Store'
-import { LOGIN_USER, resetFlagsReducer } from '@/Service/Redux/StoreSlice'
+import { AUTO_LOGIN, GET_USER_LIST, LOGIN_USER, resetFlagsReducer } from '@/Service/Redux/StoreSlice'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
@@ -46,12 +46,18 @@ const Page = () => {
     if (success) {
       toast.success("Login Successfully.")
       setProfile(data)
+      dispatch(GET_USER_LIST({pageNumber: 1, noOfRows: 5}))
       router.push('/')
     } else if (isError) {
       toast.warn(apiError)
     }
     dispatch(resetFlagsReducer())
   }, [success, isError, router, apiError, data, dispatch, setProfile])
+
+  useEffect(() => {
+    dispatch(AUTO_LOGIN())
+    dispatch(GET_USER_LIST({pageNumber: 1, noOfRows: 5}))
+  }, [])
 
   return (
     <div className='w-[100%] h-[100vh] flex items-center justify-center'>

@@ -5,11 +5,20 @@ import { GET_LOGS, resetFlagsReducer } from "@/Service/Redux/StoreSlice"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { dateType } from "../approval/page"
+import { useRouter } from "next/navigation"
 
 const page = () => {
     const dispatch = useDispatch<AppDispatch>()
+    const router = useRouter()
 
     const {data, requestLogsIsLoading,requestLogsSuccess,requestLogsIsError} = useSelector((state : RootState) => state.requestLogs)
+
+    const {profile} = useSelector((state : RootState) => state.profile)
+    useEffect(() => {
+        if(!["MANAGER", "TEAM_LEADER", "EMPLOYEE"].includes(profile.role)){
+            router.push('/auth/login')
+        }
+    }, [profile])
 
     useEffect(() => {
         dispatch(GET_LOGS())

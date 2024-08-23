@@ -1,3 +1,4 @@
+
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { LoginData } from '@/app/auth/login/page'
@@ -6,6 +7,7 @@ import { RootState } from './Store'
 
 
 export const BASE_URL = 'https://nextbackend-0gw6.onrender.com'
+// export const BASE_URL = "http://localhost:4000"
 
 
 export interface ErrorResponse  {

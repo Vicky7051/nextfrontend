@@ -11,6 +11,7 @@ import axios from "axios"
 import { toast } from "react-toastify"
 import Searchbox from "@/Components/Searchbox"
 import { onlyNumber, validatePassword } from "@/Service/Util"
+import { useRouter } from "next/navigation"
 Modal.setAppElement("#root");
 
 
@@ -36,11 +37,18 @@ const page = () => {
 
     const dispatch = useDispatch<AppDispatch>()
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false)
+    const router = useRouter()
 
     const {data, pagination} = useSelector((state : RootState) => state.user)
     const profile = useSelector((state : RootState) => state.profile.data)
     const [manager, setManager] = useState<any>()
     const [teamLeader, setTeamLeader] = useState<any>()
+
+    useEffect(() => {
+        if(!["ADMIN", "MANAGER", "TEAM_LEADER"].includes(profile.role)){
+            router.push('/auth/login')
+        }
+    }, [profile])
 
     const getAllData = async() => {
         const response = await axios.get(`${BASE_URL}/users/getAllManager`, {
