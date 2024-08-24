@@ -10,7 +10,6 @@ import { toast } from "react-toastify";
 
 export default function Home() { 
   const dispatch = useDispatch<AppDispatch>()
-  // const {data} = useSelector((state : RootState) => state.profile)
   const {profile, setProfile} = useContext(contextProvider)
 
   const { isError, isLoading, error: apiError, success, data } = useSelector((state: RootState) => state.profile)

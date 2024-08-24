@@ -44,19 +44,6 @@ const page = () => {
     const [manager, setManager] = useState<any>()
     const [teamLeader, setTeamLeader] = useState<any>()
 
-    useEffect(() => {
-        if(!["ADMIN", "MANAGER", "TEAM_LEADER"].includes(profile.role)){
-            router.push('/auth/login')
-        }
-    }, [profile])
-
-    const isLoginError = useSelector((state : RootState) => state.profile.isError)
-
-    useEffect(() => {
-        if(isError){
-            router.push('/auth/login')
-        }
-    }, [isLoginError])
 
     const getAllData = async() => {
         const response = await axios.get(`${BASE_URL}/users/getAllManager`, {

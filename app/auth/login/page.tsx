@@ -2,7 +2,7 @@
 import { AppState } from '@/Constent/Interface'
 import contextProvider from '@/Service/Context/context'
 import { AppDispatch, RootState } from '@/Service/Redux/Store'
-import { AUTO_LOGIN, GET_USER_LIST, LOGIN_USER, resetFlagsReducer } from '@/Service/Redux/StoreSlice'
+import { AUTO_LOGIN, GET_USER_LIST, LOGIN_USER, resetFlagsReducer, SET_COOKIES_FOR_FRONTEND } from '@/Service/Redux/StoreSlice'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
@@ -21,7 +21,7 @@ const Page = () => {
   
   const {setProfile} = useContext(contextProvider)
   
-  const { isError, isLoading, error: apiError, success, data } = useSelector((state: RootState) => state.profile)
+  const { isError, isLoading, error: apiError, success, data, token } = useSelector((state: RootState) => state.profile)
   
   const [user, setUser] = useState<LoginData>({
     email: "",
@@ -44,10 +44,12 @@ const Page = () => {
 
   useEffect(() => {
     if (success) {
-      toast.success("Login Successfully.")
       setProfile(data)
-      dispatch(GET_USER_LIST({pageNumber: 1, noOfRows: 5}))
-      router.push('/')
+      const cookies = {
+        authToken : token,
+        role : data.role
+      }
+      dispatch(SET_COOKIES_FOR_FRONTEND(cookies))
     } else if (isError) {
       toast.warn(apiError)
     }
@@ -56,8 +58,16 @@ const Page = () => {
 
   useEffect(() => {
     dispatch(AUTO_LOGIN())
-    dispatch(GET_USER_LIST({pageNumber: 1, noOfRows: 5}))
   }, [])
+
+  const {isCookiesError,isCookiesSuccess,isCookiesPending } = useSelector((state : RootState) => state.setCookiesForFrontend)
+
+  useEffect(() => {
+    if(isCookiesSuccess){
+      toast.success("Login Successfully.")
+      router.push('/')
+    }
+  }, [isCookiesError,isCookiesSuccess,isCookiesPending])
 
   return (
     <div className='w-[100%] h-[100vh] flex items-center justify-center'>

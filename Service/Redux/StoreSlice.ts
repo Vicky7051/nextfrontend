@@ -7,6 +7,7 @@ import { RootState } from './Store'
 
 
 export const BASE_URL = 'https://nextbackend-0gw6.onrender.com'
+export const FRONTEND_BASE_URL = 'http://localhost:3000/api'
 // export const BASE_URL = "http://localhost:4000"
 
 
@@ -16,9 +17,14 @@ export interface ErrorResponse  {
     statusCode: number
 }
 
+export interface CookiesData {
+    authToken : string
+    role : string
+}
 
 const initialState = {
     profile : {
+        token : '',
         data : {},
         isLoading : false,
         isError : false,
@@ -84,6 +90,11 @@ const initialState = {
         requestLogsSuccess : false,
         requestLogsIsError : false,
         requestLogsError : ''
+    },
+    setCookiesForFrontend : {
+        isCookiesError : false,
+        isCookiesSuccess : false,
+        isCookiesPending : false
     }
 }
 
@@ -98,7 +109,19 @@ export const LOGIN_USER = createAsyncThunk('auth/login', async (loginData: Login
         return rejectWithValue(err.response ? err.response.data : err.message);
       }
     }
-  )
+)
+
+export const SET_COOKIES_FOR_FRONTEND = createAsyncThunk('cookies/save',  async (cookiesData: CookiesData, { rejectWithValue }) => {
+    try{
+        const response = await axios.post(FRONTEND_BASE_URL, cookiesData, {
+            withCredentials : true
+        })
+        return response.data
+    }
+    catch(err : any){
+        return rejectWithValue(err.response ? err.response.data : err.message)
+    }
+})
 
 export const GET_USER_LIST = createAsyncThunk('user/getUser', async(pagination : any, { rejectWithValue }) => {
     const {pageNumber, noOfRows} = pagination
@@ -337,6 +360,7 @@ export const storeSlice = createSlice({
                 state.profile.error = "";
                 state.profile.success = true;
                 state.isLogout = false;
+                state.profile.token = actions.payload.token
             })
             .addCase(LOGIN_USER.rejected, (state, actions: any) => {
                 state.profile.isLoading = false;
@@ -505,6 +529,13 @@ export const storeSlice = createSlice({
                 state.requestLogs.requestLogsIsLoading = false,
                 state.requestLogs.requestLogsIsError = true,
                 state.requestLogs.requestLogsError = actions?.payload?.message || "An error occurred."
+            })
+            .addCase(SET_COOKIES_FOR_FRONTEND.pending, (state) => {
+                state.setCookiesForFrontend.isCookiesPending = true
+            })
+            .addCase(SET_COOKIES_FOR_FRONTEND.fulfilled, (state) => {
+                state.setCookiesForFrontend.isCookiesPending = false
+                state.setCookiesForFrontend.isCookiesSuccess = true
             })
     }
 })

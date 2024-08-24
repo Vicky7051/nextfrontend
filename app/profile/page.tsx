@@ -3,8 +3,6 @@
 import { RootState } from "@/Service/Redux/Store"
 import { useSelector } from "react-redux"
 import { getHeading } from "../../Components/Navbar/Header"
-import { useContext } from "react"
-import contextProvider from "@/Service/Context/context"
 
 const page = () => {
     const profile = useSelector((state : RootState) => state.profile.data)
