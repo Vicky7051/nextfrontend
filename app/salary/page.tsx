@@ -12,6 +12,8 @@ import { toast } from "react-toastify"
 import { onlyNumber } from "@/Service/Util"
 import { useRouter } from "next/navigation"
 
+const allowed = ['ADMIN', 'MANAGER', 'TEAM_LEADER']
+
 const page = () => {
 
     const dispatch = useDispatch<AppDispatch>()
@@ -20,6 +22,10 @@ const page = () => {
 
     const profile = useSelector((state : RootState) => state.profile.data)
     
+    useEffect(() => {
+        if(!allowed.includes(profile.role)) router.push('auth/login')
+    }, [profile])
+
     useEffect(() => {
         dispatch(GET_USER_LIST({pageNumber : 1, noOfRows : 10}))
     }, [dispatch])

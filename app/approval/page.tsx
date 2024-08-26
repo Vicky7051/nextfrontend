@@ -18,6 +18,9 @@ export interface dateType {
     value : string
 }
 
+
+const allowed = ['ADMIN', 'MANAGER', 'TEAM_LEADER']
+
 const page = () => {
     const dispatch = useDispatch<AppDispatch>()
     const router = useRouter()
@@ -33,8 +36,12 @@ const page = () => {
     const [selectedId, setSelectedId] = useState<string>('')
 
     const {data, pagination} = useSelector((state : RootState) => state.approval)
-    const {profile, isLoading, isError, error} = useSelector((state : RootState) => state.profile)
+    const {data : profile, isLoading, isError, error} = useSelector((state : RootState) => state.profile)
 
+
+    useEffect(() => {
+        if(!allowed.includes(profile.role)) router.push('auth/login')
+    }, [profile])
 
     useEffect(() => {
         dispatch(GET_APPROVAL_LIST({pageNumber, noOfRows}))

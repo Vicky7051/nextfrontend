@@ -113,7 +113,7 @@ export const LOGIN_USER = createAsyncThunk('auth/login', async (loginData: Login
 
 export const SET_COOKIES_FOR_FRONTEND = createAsyncThunk('cookies/save',  async (cookiesData: CookiesData, { rejectWithValue }) => {
     try{
-        const response = await axios.post(FRONTEND_BASE_URL, cookiesData, {
+        const response = await axios.post(`${FRONTEND_BASE_URL}/login`, cookiesData, {
             withCredentials : true
         })
         return response.data
@@ -153,6 +153,13 @@ export const LOGOUT_USER = createAsyncThunk('auth/logout', async(_, {rejectWithV
         const response = await axios.post(`${BASE_URL}/auth/logout`, {}, {
             withCredentials : true
         })
+        
+        // const  response2 = await axios.post(`${FRONTEND_BASE_URL}/logout`, {}, {
+        //     withCredentials : true
+        // })
+
+        // console.log(response2)
+
         return response.data
     }
     catch(err : any){
@@ -369,7 +376,8 @@ export const storeSlice = createSlice({
                 state.profile.success = false;
             })
             .addCase(LOGOUT_USER.fulfilled, (state) => {
-                state.isLogout = true
+                state.isLogout = true,
+                state.profile.data = {}
             })
 
             .addCase(GET_USER_LIST.pending, (state) => {

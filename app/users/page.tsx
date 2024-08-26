@@ -32,6 +32,7 @@ export interface UpdateSalaryRequest {
 }
 
 
+const allowed = ['ADMIN', 'MANAGER', 'TEAM_LEADER']
 
 const page = () => {
 
@@ -39,11 +40,14 @@ const page = () => {
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false)
     const router = useRouter()
 
-    const {data, pagination} = useSelector((state : RootState) => state.user)
+    const {data, pagination, isLoading : isLoadingAddUser} = useSelector((state : RootState) => state.user)
     const profile = useSelector((state : RootState) => state.profile.data)
     const [manager, setManager] = useState<any>()
     const [teamLeader, setTeamLeader] = useState<any>()
 
+    useEffect(() => {
+        if(!allowed.includes(profile.role)) router.push('auth/login')
+    }, [profile])
 
     const getAllData = async() => {
         const response = await axios.get(`${BASE_URL}/users/getAllManager`, {
@@ -362,7 +366,7 @@ const page = () => {
                     </div>
                     <div className="mt-5 flex gap-5 justify-end">
                         <button type="button" className="text-white py-2" onClick={() => setIsOpenModal(false)}>Cancel</button>
-                        <button className="text-white border py-2 px-10 rounded-md hover:bg-slate-800 transition-all">Save</button>
+                        <button className="text-white border py-2 px-10 rounded-md hover:bg-slate-800 transition-all disabled:text-gray-600" disabled={isLoadingAddUser}>{isLoadingAddUser ? "Please wait..." : 'Save df'}</button>
                     </div>
                 </form>
             </Modal>

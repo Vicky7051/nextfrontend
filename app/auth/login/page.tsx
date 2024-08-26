@@ -45,29 +45,18 @@ const Page = () => {
   useEffect(() => {
     if (success) {
       setProfile(data)
-      const cookies = {
-        authToken : token,
-        role : data.role
-      }
-      dispatch(SET_COOKIES_FOR_FRONTEND(cookies))
-    } else if (isError) {
-      toast.warn(apiError)
-    }
-    dispatch(resetFlagsReducer())
-  }, [success, isError, router, apiError, data, dispatch, setProfile])
-
-  useEffect(() => {
-    dispatch(AUTO_LOGIN())
-  }, [])
-
-  const {isCookiesError,isCookiesSuccess,isCookiesPending } = useSelector((state : RootState) => state.setCookiesForFrontend)
-
-  useEffect(() => {
-    if(isCookiesSuccess){
       toast.success("Login Successfully.")
       router.push('/')
+    } else if (isError) {
+      toast.warn(apiError)
+      // router.push('auth/login')
     }
-  }, [isCookiesError,isCookiesSuccess,isCookiesPending])
+    dispatch(resetFlagsReducer())
+  }, [success, isError, apiError, data])
+
+  // useEffect(() => {
+  //   dispatch(AUTO_LOGIN())
+  // }, [])
 
   return (
     <div className='w-[100%] h-[100vh] flex items-center justify-center'>
@@ -99,7 +88,7 @@ const Page = () => {
             <div className='w-full mt-5 flex items-center justify-center'>
               <button 
                 type='submit' 
-                className='border-white border-2 px-10 py-2 text-white hover:text-black hover:bg-slate-300 transition-all'
+                className='border-white border-2 px-10 py-2 text-white hover:text-black hover:bg-slate-300 transition-all disabled:text-black'
                 disabled={isLoading}
               >
                 {isLoading ? "Sending..." : "Login"}

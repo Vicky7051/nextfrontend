@@ -11,12 +11,14 @@ export async function POST(req: NextRequest) {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production", 
         path: "/",
+        maxAge : 24 * 60 * 60 * 1000
     });
 
     response.cookies.set("roleF", role, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         path: "/",
+        maxAge : 24 * 60 * 60 * 1000
     });
 
     return response;

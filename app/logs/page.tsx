@@ -7,13 +7,19 @@ import { useDispatch, useSelector } from "react-redux"
 import { dateType } from "../approval/page"
 import { useRouter } from "next/navigation"
 
+const allowed = ['MANAGER', 'TEAM_LEADER', 'EMPLOYEE']
+
 const page = () => {
     const dispatch = useDispatch<AppDispatch>()
     const router = useRouter()
 
     const {data, requestLogsIsLoading,requestLogsSuccess,requestLogsIsError} = useSelector((state : RootState) => state.requestLogs)
 
-    const {profile} = useSelector((state : RootState) => state.profile)
+    const {data : profile} = useSelector((state : RootState) => state.profile)
+
+    useEffect(() => {
+        if(!allowed.includes(profile.role)) router.push('auth/login')
+    }, [profile])
 
     useEffect(() => {
         dispatch(GET_LOGS())

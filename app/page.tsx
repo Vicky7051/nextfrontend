@@ -3,16 +3,23 @@ import contextProvider from "@/Service/Context/context";
 import { AppDispatch, RootState } from "@/Service/Redux/Store";
 import { AUTO_LOGIN, resetFlagsReducer } from "@/Service/Redux/StoreSlice";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
+const allowed = ['ADMIN', 'MANAGER', 'TEAM_LEADER', 'EMPLOYEE']
 
 export default function Home() { 
   const dispatch = useDispatch<AppDispatch>()
   const {profile, setProfile} = useContext(contextProvider)
+  const router = useRouter()
 
   const { isError, isLoading, error: apiError, success, data } = useSelector((state: RootState) => state.profile)
+
+  useEffect(() => {
+    if(!allowed.includes(profile.role)) router.push('auth/login') 
+  }, [profile])
   
   useEffect(() => {
     dispatch(AUTO_LOGIN())
