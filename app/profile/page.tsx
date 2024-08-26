@@ -3,7 +3,7 @@
 import { RootState } from "@/Service/Redux/Store"
 import { useSelector } from "react-redux"
 import { getHeading } from "../../Components/Navbar/Header"
-import { useEffect } from "react"
+import { useEffect, useLayoutEffect } from "react"
 import { useRouter } from "next/navigation"
 
 const allowed = ['ADMIN', 'MANAGER', 'TEAM_LEADER', 'EMPLOYEE']
@@ -12,7 +12,7 @@ const page = () => {
     const profile = useSelector((state : RootState) => state.profile.data)
     const router = useRouter()
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if(!allowed.includes(profile.role)) router.push('auth/login')
     }, [profile])
 

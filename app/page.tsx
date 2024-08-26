@@ -4,7 +4,7 @@ import { AppDispatch, RootState } from "@/Service/Redux/Store";
 import { AUTO_LOGIN, resetFlagsReducer } from "@/Service/Redux/StoreSlice";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useLayoutEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -17,7 +17,7 @@ export default function Home() {
 
   const { isError, isLoading, error: apiError, success, data } = useSelector((state: RootState) => state.profile)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if(!allowed.includes(profile.role)) router.push('auth/login') 
   }, [profile])
   

@@ -1,7 +1,7 @@
 "use client"
 import { AppDispatch, RootState } from "@/Service/Redux/Store"
 import { ADD_USER, BASE_URL, DELETE_USER, GET_USER_LIST, REQUEST_FOR_SALARY_INCREASE_APPROVAL, resetFlagsReducer, SEARCH_USER, UPDATE_USER } from "@/Service/Redux/StoreSlice"
-import { ChangeEvent, FormEvent, FormEventHandler, useEffect, useState } from "react"
+import { ChangeEvent, FormEvent, FormEventHandler, useEffect, useLayoutEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import BasicTable from "../../Components/Tables/BasicTable"
 import Modal from 'react-modal'
@@ -45,7 +45,7 @@ const page = () => {
     const [manager, setManager] = useState<any>()
     const [teamLeader, setTeamLeader] = useState<any>()
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if(!allowed.includes(profile.role)) router.push('auth/login')
     }, [profile])
 

@@ -3,7 +3,7 @@ import Searchbox from "@/Components/Searchbox"
 import BasicTable from "@/Components/Tables/BasicTable"
 import { AppDispatch, RootState } from "@/Service/Redux/Store"
 import { GET_USER_LIST, REQUEST_FOR_SALARY_INCREASE_APPROVAL, resetFlagsReducer, SEARCH_USER } from "@/Service/Redux/StoreSlice"
-import { ChangeEvent, FormEvent, useEffect, useState } from "react"
+import { ChangeEvent, FormEvent, useEffect, useLayoutEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import Modal from 'react-modal'
 import { IoIosCloseCircleOutline } from "react-icons/io"
@@ -22,7 +22,7 @@ const page = () => {
 
     const profile = useSelector((state : RootState) => state.profile.data)
     
-    useEffect(() => {
+    useLayoutEffect(() => {
         if(!allowed.includes(profile.role)) router.push('auth/login')
     }, [profile])
 

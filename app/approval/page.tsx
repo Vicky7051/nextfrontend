@@ -1,7 +1,7 @@
 "use client"
 import { AppDispatch, RootState } from "@/Service/Redux/Store"
 import { APPROVE_REQUEST, GET_APPROVAL_LIST, REJECT_SALARY_REQUEST, resetFlagsReducer } from "@/Service/Redux/StoreSlice"
-import { ChangeEvent, FormEvent, useEffect, useState } from "react"
+import { ChangeEvent, FormEvent, useEffect, useLayoutEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import BasicTable from "../../Components/Tables/BasicTable"
 import { toast } from "react-toastify"
@@ -39,7 +39,7 @@ const page = () => {
     const {data : profile, isLoading, isError, error} = useSelector((state : RootState) => state.profile)
 
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if(!allowed.includes(profile.role)) router.push('auth/login')
     }, [profile])
 

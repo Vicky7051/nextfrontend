@@ -2,7 +2,7 @@
 import BasicTable from "@/Components/Tables/BasicTable"
 import { AppDispatch, RootState } from "@/Service/Redux/Store"
 import { GET_LOGS, resetFlagsReducer } from "@/Service/Redux/StoreSlice"
-import { useEffect } from "react"
+import { useEffect, useLayoutEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { dateType } from "../approval/page"
 import { useRouter } from "next/navigation"
@@ -17,7 +17,7 @@ const page = () => {
 
     const {data : profile} = useSelector((state : RootState) => state.profile)
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if(!allowed.includes(profile.role)) router.push('auth/login')
     }, [profile])
 
