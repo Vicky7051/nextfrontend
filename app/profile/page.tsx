@@ -5,17 +5,20 @@ import { useSelector } from "react-redux"
 import { getHeading } from "../../Components/Navbar/Header"
 import { useEffect, useLayoutEffect } from "react"
 import { useRouter } from "next/navigation"
+import Loader from "@/Components/Loader/Loader"
 
 const allowed = ['ADMIN', 'MANAGER', 'TEAM_LEADER', 'EMPLOYEE']
 
 const page = () => {
-    const profile = useSelector((state : RootState) => state.profile.data)
+    const {data : profile, isLoading} = useSelector((state : RootState) => state.profile)
     const router = useRouter()
 
     useLayoutEffect(() => {
-        if(!allowed.includes(profile.role)) router.push('auth/login')
+        if(profile && profile.role){
+          if(!allowed.includes(profile.role)) router.push('auth/login')
+        } 
     }, [profile])
-
+    
     return (
         <div>
             <h1 className="text-2xl">Profile</h1>

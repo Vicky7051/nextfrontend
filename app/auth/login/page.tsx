@@ -54,10 +54,6 @@ const Page = () => {
     dispatch(resetFlagsReducer())
   }, [success, isError, apiError, data])
 
-  // useEffect(() => {
-  //   dispatch(AUTO_LOGIN())
-  // }, [])
-
   return (
     <div className='w-[100%] h-[100vh] flex items-center justify-center'>
       <div className='bg-blue-900 w-[500px] p-5 rounded-md'>

@@ -17,17 +17,21 @@ const Header = () => {
 
     const dispatch = useDispatch<AppDispatch>()
     const { data, isLoading, isError, error, success } = useSelector((state : RootState) => state.profile)
+    
+    const {isAutoLoginLoading, isAutoLoginSuccess, isAutoLoginError, autoLoginError} = useSelector((state : RootState) => state.autoLogin)
+
     useEffect(() => {
         dispatch(AUTO_LOGIN())
     }, [])
 
     useEffect(() => {
-        if(isError){
-            toast.warn(error)
+        if(isAutoLoginError){
+            toast.warn(autoLoginError)
             router.push('/auth/login')
             dispatch(resetFlagsReducer())
         }
-    }, [isError, error])
+        dispatch(resetFlagsReducer())
+    }, [isAutoLoginError, autoLoginError])
 
     return (
         <h1 className="text-white text-3xl font-bold text-center" style={{padding: "40px 0px"}}>{getHeading(data.role ? data.role : "")}</h1>

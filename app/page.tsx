@@ -1,4 +1,5 @@
 "use client"
+import Loader from "@/Components/Loader/Loader";
 import contextProvider from "@/Service/Context/context";
 import { AppDispatch, RootState } from "@/Service/Redux/Store";
 import { AUTO_LOGIN, resetFlagsReducer } from "@/Service/Redux/StoreSlice";
@@ -12,28 +13,18 @@ const allowed = ['ADMIN', 'MANAGER', 'TEAM_LEADER', 'EMPLOYEE']
 
 export default function Home() { 
   const dispatch = useDispatch<AppDispatch>()
-  const {profile, setProfile} = useContext(contextProvider)
+  // const {profile, setProfile} = useContext(contextProvider)
   const router = useRouter()
 
-  const { isError, isLoading, error: apiError, success, data } = useSelector((state: RootState) => state.profile)
+  const { isError, isLoading, error: apiError, success, data : profile } = useSelector((state: RootState) => state.profile)
+
+  const {isAutoLoginLoading} = useSelector((state : RootState) => state.autoLogin)
 
   useLayoutEffect(() => {
-    if(!allowed.includes(profile.role)) router.push('auth/login') 
+    if(profile && profile.role){
+      if(!allowed.includes(profile.role)) router.push('auth/login')
+    } 
   }, [profile])
-  
-  useEffect(() => {
-    dispatch(AUTO_LOGIN())
-  }, [dispatch])
-
-  useEffect(() => {
-    if (success) {
-      setProfile(data)
-    } else if (isError) {
-      toast.warn(apiError)
-    }
-    dispatch(resetFlagsReducer())
-  }, [success, isError, dispatch, data, apiError, setProfile])
-
   
   return (
     <div className="w-full h-full">

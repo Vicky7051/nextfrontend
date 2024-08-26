@@ -46,19 +46,26 @@ const page = () => {
     const [teamLeader, setTeamLeader] = useState<any>()
 
     useLayoutEffect(() => {
-        if(!allowed.includes(profile.role)) router.push('auth/login')
+        if(profile && profile.role){
+          if(!allowed.includes(profile.role)) router.push('auth/login')
+        } 
     }, [profile])
 
     const getAllData = async() => {
-        const response = await axios.get(`${BASE_URL}/users/getAllManager`, {
-            withCredentials : true
-        })
-        setManager(response.data)
+        try{
+            const response = await axios.get(`${BASE_URL}/users/getAllManager`, {
+                withCredentials : true
+            })
+            setManager(response.data)
 
-        const data = await axios.get(`${BASE_URL}/users/getAllTeamLeader`, {
-            withCredentials : true
-        })
-        setTeamLeader(data.data)
+            const data = await axios.get(`${BASE_URL}/users/getAllTeamLeader`, {
+                withCredentials : true
+            })
+            setTeamLeader(data.data)
+        }
+        catch(err){
+            console.log(err)
+        }
     }   
     
     const [pageNumber, setPageNumber] = useState<number>(1)
@@ -366,7 +373,7 @@ const page = () => {
                     </div>
                     <div className="mt-5 flex gap-5 justify-end">
                         <button type="button" className="text-white py-2" onClick={() => setIsOpenModal(false)}>Cancel</button>
-                        <button className="text-white border py-2 px-10 rounded-md hover:bg-slate-800 transition-all disabled:text-gray-600" disabled={isLoadingAddUser}>{isLoadingAddUser ? "Please wait..." : 'Save df'}</button>
+                        <button className="text-white border py-2 px-10 rounded-md hover:bg-slate-800 transition-all disabled:text-gray-600" disabled={isLoading}>{isLoading ? "Please wait..." : 'Save df'}</button>
                     </div>
                 </form>
             </Modal>

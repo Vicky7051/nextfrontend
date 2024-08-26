@@ -40,7 +40,9 @@ const page = () => {
 
 
     useLayoutEffect(() => {
-        if(!allowed.includes(profile.role)) router.push('auth/login')
+        if(profile && profile.role){
+          if(!allowed.includes(profile.role)) router.push('auth/login')
+        } 
     }, [profile])
 
     useEffect(() => {

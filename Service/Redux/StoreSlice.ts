@@ -91,10 +91,11 @@ const initialState = {
         requestLogsIsError : false,
         requestLogsError : ''
     },
-    setCookiesForFrontend : {
-        isCookiesError : false,
-        isCookiesSuccess : false,
-        isCookiesPending : false
+    autoLogin : {
+        isAutoLoginLoading : false,
+        isAutoLoginSuccess : false,
+        isAutoLoginError : false,
+        autoLoginError : ''
     }
 }
 
@@ -153,12 +154,6 @@ export const LOGOUT_USER = createAsyncThunk('auth/logout', async(_, {rejectWithV
         const response = await axios.post(`${BASE_URL}/auth/logout`, {}, {
             withCredentials : true
         })
-        
-        // const  response2 = await axios.post(`${FRONTEND_BASE_URL}/logout`, {}, {
-        //     withCredentials : true
-        // })
-
-        // console.log(response2)
 
         return response.data
     }
@@ -349,6 +344,12 @@ export const storeSlice = createSlice({
                     requestLogsIsLoading : false,
                     requestLogsSuccess : false,
                     requestLogsIsError : false
+                },
+                autoLogin : {
+                    ...state.autoLogin,
+                    isAutoLoginLoading : false,
+                    isAutoLoginSuccess : false,
+                    isAutoLoginError : false
                 }
             }
         } 
@@ -398,24 +399,18 @@ export const storeSlice = createSlice({
             })
             
             .addCase(AUTO_LOGIN.pending, (state) => {
-                state.profile.isLoading = true;
-                state.profile.isError = false;
-                state.profile.success = false;
+                state.autoLogin.isAutoLoginLoading = true
             })
             .addCase(AUTO_LOGIN.fulfilled, (state, actions) => {
                 state.profile.data = actions.payload.user;
-                state.profile.isLoading = false;
-                state.profile.isError = false;
-                state.profile.error = "";
-                state.profile.success = true;
+                state.autoLogin.isAutoLoginLoading = false
+                state.autoLogin.isAutoLoginSuccess = true
             })
             .addCase(AUTO_LOGIN.rejected, (state, actions: any) => {
-                state.profile.isLoading = false;
-                state.profile.isError = true;
-                state.profile.error = actions.payload?.message || 'Login failed.';
-                state.profile.success = false;
+                state.autoLogin.isAutoLoginLoading = false
+                state.autoLogin.isAutoLoginError = true
+                state.autoLogin.autoLoginError = actions.payload?.message || 'Login failed.';
             })
-            
             .addCase(ADD_USER.pending, (state) => {
                 state.addUser.isLoading = true;
             })
@@ -538,13 +533,7 @@ export const storeSlice = createSlice({
                 state.requestLogs.requestLogsIsError = true,
                 state.requestLogs.requestLogsError = actions?.payload?.message || "An error occurred."
             })
-            .addCase(SET_COOKIES_FOR_FRONTEND.pending, (state) => {
-                state.setCookiesForFrontend.isCookiesPending = true
-            })
-            .addCase(SET_COOKIES_FOR_FRONTEND.fulfilled, (state) => {
-                state.setCookiesForFrontend.isCookiesPending = false
-                state.setCookiesForFrontend.isCookiesSuccess = true
-            })
+            
     }
 })
 

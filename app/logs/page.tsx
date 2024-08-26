@@ -18,7 +18,9 @@ const page = () => {
     const {data : profile} = useSelector((state : RootState) => state.profile)
 
     useLayoutEffect(() => {
-        if(!allowed.includes(profile.role)) router.push('auth/login')
+        if(profile && profile.role){
+          if(!allowed.includes(profile.role)) router.push('auth/login')
+        } 
     }, [profile])
 
     useEffect(() => {
