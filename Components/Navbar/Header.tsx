@@ -26,7 +26,7 @@ const Header = () => {
 
     useEffect(() => {
         if(isAutoLoginError){
-            toast.warn(autoLoginError)
+            // toast.warn(autoLoginError)
             router.push('/auth/login')
             dispatch(resetFlagsReducer())
         }
